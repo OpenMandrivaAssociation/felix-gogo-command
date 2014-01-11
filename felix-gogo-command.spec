@@ -17,7 +17,7 @@ Version:        0.12.0
 Release:        9.0%{?dist}
 Summary:        Apache Felix Gogo Command
 
-Group:          Development/Libraries
+
 License:        ASL 2.0
 URL:            http://felix.apache.org
 Source0:        http://www.apache.org/dist/felix/%{bundle}-%{version}-project.tar.gz
@@ -56,7 +56,7 @@ Requires:       mvn(org.apache.felix:org.apache.felix.bundlerepository)
 Provides basic shell commands for Gogo.
 
 %package javadoc
-Group:          Documentation
+
 Summary:        Javadoc for %{pkg_name}
 Requires:       jpackage-utils
 
