@@ -1,4 +1,9 @@
 %{?_javapackages_macros:%_javapackages_macros}
+%if 0%{?fedora}
+%else
+%undefine __cp
+%global __cp /bin/cp
+%endif
 %global project felix
 %global bundle org.apache.felix.gogo.command
 %global groupId org.apache.felix
