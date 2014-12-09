@@ -10,6 +10,7 @@ index 56797d8..d2a12b3 100644
 -      <artifactId>org.osgi.core</artifactId>
 +      <groupId>org.apache.felix</groupId>
 +      <artifactId>org.apache.felix.framework</artifactId>
-       <version>4.3.0</version>
+       <version>4.3.1</version>
      </dependency>
      <dependency>
+

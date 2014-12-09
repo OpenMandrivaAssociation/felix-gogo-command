@@ -1,23 +1,16 @@
 %{?_javapackages_macros:%_javapackages_macros}
-%if 0%{?fedora}
-%else
-%undefine __cp
-%global __cp /bin/cp
-%endif
-%global project felix
 %global bundle org.apache.felix.gogo.command
-%global groupId org.apache.felix
-%global artifactId %{bundle}
 
 %{!?scl:%global pkg_name %{name}}
 %{?scl:%scl_package %{project}-gogo-command}
+%global project felix
 
 Name:           %{?scl_prefix}%{project}-gogo-command
-Version:        0.12.0
-Release:        9.0%{?dist}
+Version:        0.14.0
+Release:        1%{?dist}
 Summary:        Apache Felix Gogo Command
 
-
+Group:          System/Libraries
 License:        ASL 2.0
 URL:            http://felix.apache.org
 Source0:        http://www.apache.org/dist/felix/%{bundle}-%{version}-project.tar.gz
@@ -33,8 +26,7 @@ BuildRequires:  java-devel >= 1:1.7.0
 BuildRequires:  maven-local
 BuildRequires:  maven-dependency-plugin
 BuildRequires:  maven-surefire-plugin
-BuildRequires:  maven-surefire-provider-junit4
-BuildRequires:  jpackage-utils
+BuildRequires:  maven-surefire-provider-junit
 BuildRequires:  maven-install-plugin
 BuildRequires:  mockito
 
@@ -56,14 +48,11 @@ Requires:       mvn(org.apache.felix:org.apache.felix.bundlerepository)
 Provides basic shell commands for Gogo.
 
 %package javadoc
-
+Group:          Documentation
 Summary:        Javadoc for %{pkg_name}
-Requires:       jpackage-utils
 
 %description javadoc
 API documentation for %{pkg_name}.
-
-%global POM %{_mavenpomdir}/JPP.%{project}-%{bundle}.pom
 
 %prep
 %setup -q -n %{bundle}-%{version} 
@@ -71,35 +60,27 @@ API documentation for %{pkg_name}.
 %patch1 -p1
 
 %build
-mvn-rpmbuild install javadoc:aggregate
+%mvn_build
 
 %install
-# jars
-install -d -m 0755 %{buildroot}%{_javadir}/%{project}
-install -m 644 target/%{bundle}-%{version}.jar \
-        %{buildroot}%{_javadir}/%{project}/%{bundle}.jar
+%mvn_install
 
-# poms
-install -d -m 755 %{buildroot}%{_mavenpomdir}
-install -pm 644 pom.xml %{buildroot}%{_mavenpomdir}/JPP.%{project}-%{bundle}.pom
-
-%add_maven_depmap JPP.%{project}-%{bundle}.pom %{project}/%{bundle}.jar
-
-# javadoc
-install -d -m 0755 %{buildroot}%{_javadocdir}/%{pkg_name}
-%__cp -pr target/site/api*/* %{buildroot}%{_javadocdir}/%{pkg_name}
-
-%files
+%files -f .mfiles
 %doc LICENSE
-%{_javadir}/*
-%{_mavenpomdir}/*
-%{_mavendepmapfragdir}/*
 
-%files javadoc
+%files javadoc -f .mfiles-javadoc
 %doc LICENSE
-%{_javadocdir}/%{pkg_name}
 
 %changelog
+* Thu Jul 3 2014 Alexander Kurtakov <akurtako@redhat.com> 0.14.0-1
+- Update to 0.14.0.
+
+* Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 0.12.0-11
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
+
+* Fri May 16 2014 Alexander Kurtakov <akurtako@redhat.com> 0.12.0-10
+- Start using mvn_build/install.
+
 * Mon Aug 5 2013 Krzysztof Daniel <kdaniel@redhat.com> 0.12.0-9
 - Fix FTBS.
 
@@ -130,3 +111,4 @@ install -d -m 0755 %{buildroot}%{_javadocdir}/%{pkg_name}
 
 * Tue Jan 10 2012 Krzysztof Daniel <kdaniel@redhat.com> 0.12.0-1
 - Release 0.12.0
+
