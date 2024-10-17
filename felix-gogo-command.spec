@@ -12,7 +12,7 @@ Summary:        Apache Felix Gogo Command
 
 Group:          System/Libraries
 License:        ASL 2.0
-URL:            http://felix.apache.org
+URL:            https://felix.apache.org
 Source0:        http://www.apache.org/dist/felix/%{bundle}-%{version}-project.tar.gz
 
 Patch0:         felix-gogo-command-pom.xml.patch
